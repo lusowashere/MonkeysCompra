@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "120343442246",
+    "firebase_url": "https://compra-d1022.firebaseio.com",
+    "project_id": "compra-d1022",
+    "storage_bucket": "compra-d1022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120343442246:android:9082099e3e95e246",
+        "android_client_info": {
+          "package_name": "com.example.lusog.monkeyscompra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "120343442246-t3tah4b0hpt4sf9hqhte1ef89k0qrgco.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lusog.monkeyscompra",
+            "certificate_hash": "987e21c64f8e88bcc161ede932d80ad7edaa7ba5"
+          }
+        },
+        {
+          "client_id": "120343442246-t6g03tippa87vgn061re12he92u65vnv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSyoK2fCbG3mh7KOe3xt1ScOnrDVo9Bis"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "120343442246-t6g03tippa87vgn061re12he92u65vnv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
