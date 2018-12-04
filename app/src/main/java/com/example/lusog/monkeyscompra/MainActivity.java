@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void abrirPantallaLista(View view){//abre la pantalla con la lista de los elementos
-        Intent intento=new Intent(this,ListaCompra.class);
+        Intent intento=new Intent(this,ListaCompra2.class);
         startActivity(intento);
     }
 
