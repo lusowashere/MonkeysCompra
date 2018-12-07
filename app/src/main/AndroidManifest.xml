@@ -30,7 +30,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".ListaCompra2"></activity>
+        <activity android:name=".ListaCompra2" />
+        <activity android:name=".pantallaAddElemento2"></activity>
     </application>
 
 </manifest>

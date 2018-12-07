@@ -10,7 +10,7 @@ public class elemento extends Object {
     public String Tipo;
     public boolean comprado;
     public String listaElemento; //lista en la que se está usando el elemento (puede ser "anteriores" o "compra". Según lo que sea el string es uno u otro
-
+    public String fecha;
 
     public elemento(String Cantidad,String Nombre,String Tipo, String listaElemento){
         this.Cantidad=Cantidad;
@@ -18,6 +18,7 @@ public class elemento extends Object {
         this.Tipo=Tipo;
         this.listaElemento=listaElemento;
         comprado=false;//si no digo nada, entiendo que no está comprado
+        fecha="";
     }
 
     public elemento(String Cantidad, String Nombre, String Tipo, Boolean comprado, String listaElemento){
@@ -26,6 +27,15 @@ public class elemento extends Object {
         this.Tipo=Tipo;
         this.comprado=comprado;
         this.listaElemento=listaElemento;
+        fecha="";
+    }
+
+    public elemento(String Cantidad, String Nombre, String Tipo, Boolean comprado){
+        this.Cantidad=Cantidad;
+        this.Nombre=Nombre;
+        this.Tipo=Tipo;
+        this.comprado=comprado;
+        fecha="";
     }
 
     public String descripcion(){ return "Nombre:" +Nombre+"  - Tipo:"+Tipo+"  - Cantidad:"+Cantidad;}
@@ -57,11 +67,13 @@ public class elemento extends Object {
     }
 
     public ElementoAux getElementoAux(){//para crear elementos de firebase
-        ElementoAux el=new ElementoAux(Cantidad,Nombre,Tipo,comprado);
+        ElementoAux el=new ElementoAux(Cantidad,Nombre,Tipo,comprado,fecha);
         return el;
     }
 
 
-
+    public void setFecha(String nuevaFecha){
+        fecha=nuevaFecha;
+    }
 
 }

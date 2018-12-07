@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void abrirPantallaAddElemento(View view){
-        Intent intento2=new Intent(this,pantallaAddElemento.class);
+        Intent intento2=new Intent(this,pantallaAddElemento2.class);
         startActivity(intento2);
     }
 }

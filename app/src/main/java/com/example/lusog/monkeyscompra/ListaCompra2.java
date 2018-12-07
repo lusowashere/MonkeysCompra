@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -14,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ListaCompra2 extends AppCompatActivity {
 
@@ -47,30 +50,83 @@ public class ListaCompra2 extends AppCompatActivity {
         listaElementos.add(new elemento("1 caja","elemento2","otro",false,""));
         */
 
-        recyclerElementos.setLayoutManager(new LinearLayoutManager(this));
-        AdapterItemListaCompra adapter=new AdapterItemListaCompra(listaElementos);
-        recyclerElementos.setAdapter(adapter);
-
-
         database=FirebaseDatabase.getInstance();
 
         myRef=database.getReference("elementos");
 
         myQuery=myRef.orderByChild("comprado").equalTo(false);
 
+        recyclerElementos.setLayoutManager(new LinearLayoutManager(this));
+        AdapterItemListaCompra adapter=new AdapterItemListaCompra(listaElementos,myRef);
+        recyclerElementos.setAdapter(adapter);
+
         listener=myQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                elemento e=new elemento(dataSnapshot.child("Cantidad").getValue().toString(),dataSnapshot.child("Nombre").getValue().toString(),dataSnapshot.child("Tipo").getValue().toString(),(boolean) dataSnapshot.child("comprado").getValue());
+                if(dataSnapshot.hasChild("Fecha")){
+                    e.setFecha(dataSnapshot.child("Fecha").getValue().toString());
+                }
 
+                boolean elementoEnLista=false;
+
+                for(elemento elem:listaElementos){
+                    if(elem.Nombre.equals(e.Nombre)){
+                        elementoEnLista=true;
+                        elem.comprado=false;
+                        recyclerElementos.getAdapter().notifyDataSetChanged();
+                        actualizar_numero_elementos();
+                    }
+                }
+
+                if(!elementoEnLista) {
+                    listaElementos.add(e);
+                    recyclerElementos.getAdapter().notifyDataSetChanged();
+                    actualizar_numero_elementos();
+                }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                String elementoModificado=dataSnapshot.child("Nombre").getValue().toString();
+
+                for(elemento elem:listaElementos){
+                    if(elem.Nombre.equals(elementoModificado)){
+                        elem.Cantidad=dataSnapshot.child("Cantidad").getValue().toString();
+                        elem.comprado=(boolean) dataSnapshot.child("comprado").getValue();//este no tiene sentido
+                        if(dataSnapshot.hasChild("Fecha")){
+                            elem.setFecha(dataSnapshot.child("Fecha").getValue().toString());
+                        }
+                        recyclerElementos.getAdapter().notifyDataSetChanged();
+                        actualizar_numero_elementos();
+                    }
+                }
 
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                String nombreRemovido=dataSnapshot.child("Nombre").getValue().toString();
+
+                for(elemento elem:listaElementos){
+                    if(elem.Nombre.equals(nombreRemovido)){
+                        elem.comprado=true;
+                        recyclerElementos.getAdapter().notifyDataSetChanged();
+                        actualizar_numero_elementos();
+                    }
+                }
+
+                //esto no lo pongo porque si no en cuanto se marca el check desaparece
+                /*
+                Iterator<elemento> itr=listaElementos.iterator();
+
+                while(itr.hasNext()){
+
+                    if(nombreRemovido.equals(itr.next().Nombre)){
+                        itr.remove();
+                        recyclerElementos.getAdapter().notifyDataSetChanged();
+                    }
+                }*/
 
             }
 
@@ -83,11 +139,29 @@ public class ListaCompra2 extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        })
+        });
 
     }
 
 
 
+    public void quitarElementosMarcados(View view){
+        Iterator<elemento> iter=listaElementos.iterator();
+
+        while(iter.hasNext()){
+            if(iter.next().comprado){
+                iter.remove();
+            }
+        }
+
+        recyclerElementos.getAdapter().notifyDataSetChanged();
+        actualizar_numero_elementos();
+
+    }
+
+    public void actualizar_numero_elementos(){
+        TextView texto=findViewById(R.id.labelCantidadElementos);
+        texto.setText(listaElementos.size()+" elementos");
+    }
 
 }

@@ -8,14 +8,22 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class AdapterItemListaCompra extends RecyclerView.Adapter<AdapterItemListaCompra.ViewHolderLista> {
 
     ArrayList<elemento> listaElementos;
+    DatabaseReference referencia;
 
-    public AdapterItemListaCompra(ArrayList<elemento> listaElementos) {
+    public AdapterItemListaCompra(ArrayList<elemento> listaElementos, DatabaseReference ref) {
         this.listaElementos = listaElementos;
+        referencia=ref;
     }
 
     @Override
@@ -28,10 +36,13 @@ public class AdapterItemListaCompra extends RecyclerView.Adapter<AdapterItemList
     public void onBindViewHolder(final AdapterItemListaCompra.ViewHolderLista holder, final int position) {
         holder.labelNombre.setText(listaElementos.get(position).Nombre);
         holder.labelCantidad.setText(listaElementos.get(position).Cantidad);
+        holder.labelFecha.setText(listaElementos.get(position).fecha);
         if(listaElementos.get(position).comprado){
             holder.checkBoxComprado.setChecked(true);
+            holder.cuadro.setBackgroundColor(Color.parseColor("#58FA82"));
         }else{
             holder.checkBoxComprado.setChecked(false);
+            holder.cuadro.setBackgroundColor(Color.parseColor("#E6E6E6"));
         }
 
         holder.checkBoxComprado.setOnClickListener( new View.OnClickListener(){
@@ -44,9 +55,12 @@ public class AdapterItemListaCompra extends RecyclerView.Adapter<AdapterItemList
 
                 if(marcado){
                     holder.cuadro.setBackgroundColor(Color.parseColor("#58FA82"));
+                    referencia.child(listaElementos.get(position).Nombre).child("Fecha").setValue("comprado el "+get_dia_y_hora_actual());
                 }else{
-                    holder.cuadro.setBackgroundColor(Color.rgb(255,255,255));
+                    holder.cuadro.setBackgroundColor(Color.parseColor("#E6E6E6"));
                 }
+
+                referencia.child(listaElementos.get(position).Nombre).child("comprado").setValue(marcado);
 
             }
         });
@@ -60,7 +74,7 @@ public class AdapterItemListaCompra extends RecyclerView.Adapter<AdapterItemList
 
     public class ViewHolderLista extends RecyclerView.ViewHolder {
 
-        TextView labelNombre, labelCantidad;
+        TextView labelNombre, labelCantidad,labelFecha;
         CheckBox checkBoxComprado;
         View cuadro;
 
@@ -69,9 +83,20 @@ public class AdapterItemListaCompra extends RecyclerView.Adapter<AdapterItemList
 
             labelNombre=itemView.findViewById(R.id.labelNombre);
             labelCantidad=itemView.findViewById(R.id.labelCantidad);
+            labelFecha=itemView.findViewById(R.id.labelFecha);
             checkBoxComprado=itemView.findViewById(R.id.checkBoxComprado);
             cuadro=itemView.findViewById(R.id.cuadro);
 
         }
     }
+
+    public String get_dia_y_hora_actual(){
+        Calendar cal = Calendar.getInstance();
+        Date date=cal.getTime();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM HH:mm");
+        String formattedDate=dateFormat.format(date);
+        return formattedDate;
+    }
+
+
 }

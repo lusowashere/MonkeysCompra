@@ -5,12 +5,14 @@ public class ElementoAux {
     public String Nombre;
     public String Tipo;
     public boolean comprado;
+    public String Fecha;
 
-    public ElementoAux(String Cantidad, String Nombre, String Tipo, boolean comprado){
+    public ElementoAux(String Cantidad, String Nombre, String Tipo, boolean comprado,String Fecha){
         this.Cantidad=Cantidad;
         this.Nombre=Nombre;
         this.Tipo=Tipo;
         this.comprado=comprado;
+        this.Fecha=Fecha;
     }
 
 

@@ -38,10 +38,14 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="216dp"
+        android:layout_width="0dp"
         android:layout_height="17dp"
-        android:text="Luso Was Here - V 2.0 11/10/2018"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="Luso Was Here - V 3.0 Beta 6/12/2018"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
