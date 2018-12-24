@@ -43,7 +43,7 @@ public class pantallaAddElemento2 extends AppCompatActivity {
         textBoxNombre=findViewById(R.id.textBoxNombre);
         textBoxCantidad=findViewById(R.id.textBoxCantidad);
 
-        adapterItemAddElemento adaptador=new adapterItemAddElemento(listaElementos,myRef);
+        adapterItemAddElemento adaptador=new adapterItemAddElemento(listaElementos,database.getReference());
         adaptador.addTextBoxes(textBoxNombre,textBoxCantidad);
 
         recicler.setLayoutManager(new LinearLayoutManager(this));
@@ -133,7 +133,7 @@ public class pantallaAddElemento2 extends AppCompatActivity {
             myRef.child(nuevoElemento.Nombre).child("comprado").setValue(false);
             myRef.child(nuevoElemento.Nombre).child("Tipo").setValue("otro");
 */
-
+            database.getReference().child("ultimaModificacion").setValue(get_dia_y_hora_actual());
 
             labelMensaje.setText("Añadido " + nuevoElemento.Nombre + "(" + nuevoElemento.Cantidad + ") a la lista de la compra");
 

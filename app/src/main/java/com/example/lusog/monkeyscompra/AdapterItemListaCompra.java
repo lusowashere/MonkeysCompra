@@ -55,12 +55,14 @@ public class AdapterItemListaCompra extends RecyclerView.Adapter<AdapterItemList
 
                 if(marcado){
                     holder.cuadro.setBackgroundColor(Color.parseColor("#58FA82"));
-                    referencia.child(listaElementos.get(position).Nombre).child("Fecha").setValue("comprado el "+get_dia_y_hora_actual());
+                    referencia.child("elementos").child(listaElementos.get(position).Nombre).child("Fecha").setValue("comprado el "+get_dia_y_hora_actual());
                 }else{
                     holder.cuadro.setBackgroundColor(Color.parseColor("#E6E6E6"));
+                    referencia.child("elementos").child(listaElementos.get(position).Nombre).child("Fecha").setValue("Apuntado el "+get_dia_y_hora_actual());
                 }
 
-                referencia.child(listaElementos.get(position).Nombre).child("comprado").setValue(marcado);
+                referencia.child("elementos").child(listaElementos.get(position).Nombre).child("comprado").setValue(marcado);
+                referencia.child("ultimaModificacion").setValue(get_dia_y_hora_actual());
 
             }
         });

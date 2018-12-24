@@ -4,18 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#2E9AFE"
+
     tools:context="com.example.lusog.monkeyscompra.MainActivity">
+
 
     <Button
         android:id="@+id/buttListaCompra"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:onClick="abrirPantallaLista"
         android:text="Comprobar Lista De La Compra"
+        app:layout_constraintBottom_toTopOf="@+id/labelUltimaModificacion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,28 +29,46 @@
     <Button
         android:id="@+id/buttAddElemento"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:onClick="abrirPantallaAddElemento"
         android:text="Añadir elemento a comprar"
+        app:layout_constraintBottom_toTopOf="@+id/labelVersion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttListaCompra" />
+        app:layout_constraintTop_toBottomOf="@+id/labelUltimaModificacion" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/labelVersion"
         android:layout_width="0dp"
         android:layout_height="17dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:text="Luso Was Here - V 3.0 Beta 6/12/2018"
+        android:text="Luso Was Here - V 3.2 7/12/2018"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/labelUltimaModificacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Ultima modificacion"
+        app:layout_constraintBottom_toTopOf="@+id/labelVersion"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

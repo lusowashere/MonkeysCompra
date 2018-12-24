@@ -57,7 +57,7 @@ public class ListaCompra2 extends AppCompatActivity {
         myQuery=myRef.orderByChild("comprado").equalTo(false);
 
         recyclerElementos.setLayoutManager(new LinearLayoutManager(this));
-        AdapterItemListaCompra adapter=new AdapterItemListaCompra(listaElementos,myRef);
+        AdapterItemListaCompra adapter=new AdapterItemListaCompra(listaElementos,database.getReference());
         recyclerElementos.setAdapter(adapter);
 
         listener=myQuery.addChildEventListener(new ChildEventListener() {
@@ -74,6 +74,7 @@ public class ListaCompra2 extends AppCompatActivity {
                     if(elem.Nombre.equals(e.Nombre)){
                         elementoEnLista=true;
                         elem.comprado=false;
+                        elem.setFecha(e.fecha);
                         recyclerElementos.getAdapter().notifyDataSetChanged();
                         actualizar_numero_elementos();
                     }
@@ -95,7 +96,7 @@ public class ListaCompra2 extends AppCompatActivity {
                         elem.Cantidad=dataSnapshot.child("Cantidad").getValue().toString();
                         elem.comprado=(boolean) dataSnapshot.child("comprado").getValue();//este no tiene sentido
                         if(dataSnapshot.hasChild("Fecha")){
-                            elem.setFecha(dataSnapshot.child("Fecha").getValue().toString());
+                            elem.setFecha(dataSnapshot.child("Fecha").getValue().toString());//este tampoco
                         }
                         recyclerElementos.getAdapter().notifyDataSetChanged();
                         actualizar_numero_elementos();

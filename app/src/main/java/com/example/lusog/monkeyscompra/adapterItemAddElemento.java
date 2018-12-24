@@ -57,9 +57,12 @@ public class adapterItemAddElemento extends RecyclerView.Adapter<adapterItemAddE
                     if(hayTextBoxes){
                         textBoxCantidad.setText(listaElementos.get(position).Cantidad);
                         textBoxNombre.setText(listaElementos.get(position).Nombre);
+                        holder.cuadro.setBackgroundColor(Color.parseColor("#A9F5E1"));
                     }
                 }else{
-                    referencia.child(listaElementos.get(position).Nombre).child("comprado").setValue(true);
+                    referencia.child("elementos").child(listaElementos.get(position).Nombre).child("comprado").setValue(true);
+                    referencia.child("elementos").child(listaElementos.get(position).Nombre).child("Fecha").setValue("comprado el "+get_dia_y_hora_actual());
+                    referencia.child("ultimaModificacion").setValue(get_dia_y_hora_actual());
                 }
             }
         });
@@ -72,7 +75,8 @@ public class adapterItemAddElemento extends RecyclerView.Adapter<adapterItemAddE
                 alerta.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        referencia.child(listaElementos.get(position).Nombre).setValue(null);
+                        referencia.child("elementos").child(listaElementos.get(position).Nombre).setValue(null);
+                        referencia.child("ultimaModificacion").setValue(get_dia_y_hora_actual());
                         dialogInterface.dismiss();
                     }
                 });
@@ -118,5 +122,16 @@ public class adapterItemAddElemento extends RecyclerView.Adapter<adapterItemAddE
         textBoxNombre=nombre;
         hayTextBoxes=true;
     }
+
+
+
+    public String get_dia_y_hora_actual(){
+        Calendar cal = Calendar.getInstance();
+        Date date=cal.getTime();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM HH:mm");
+        String formattedDate=dateFormat.format(date);
+        return formattedDate;
+    }
+
 
 }
