@@ -1,10 +1,12 @@
 package com.example.lusog.monkeyscompra;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,7 +17,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 public class ListaCompra2 extends AppCompatActivity {
@@ -68,6 +75,17 @@ public class ListaCompra2 extends AppCompatActivity {
                     e.setFecha(dataSnapshot.child("Fecha").getValue().toString());
                 }
 
+                if(dataSnapshot.hasChild(("FechaCompra"))){
+                    e.setFechaCompra(dataSnapshot.child("FechaCompra").getValue().toString());
+                }
+                if(dataSnapshot.hasChild(("FechaApuntado"))){
+                    e.setFechaApuntado(dataSnapshot.child("FechaApuntado").getValue().toString());
+                }
+                if(dataSnapshot.hasChild("urgente")){
+                    e.setUrgente((boolean)dataSnapshot.child("urgente").getValue());
+                }
+
+
                 boolean elementoEnLista=false;
 
                 for(elemento elem:listaElementos){
@@ -75,16 +93,20 @@ public class ListaCompra2 extends AppCompatActivity {
                         elementoEnLista=true;
                         elem.comprado=false;
                         elem.setFecha(e.fecha);
-                        recyclerElementos.getAdapter().notifyDataSetChanged();
-                        actualizar_numero_elementos();
+                        elem.setFechaApuntado(e.fechaApuntado);
+                        elem.setFechaCompra(e.fechaCompra);
+                        elem.setUrgente(e.urgente);
+                        //recyclerElementos.getAdapter().notifyDataSetChanged();
                     }
                 }
 
                 if(!elementoEnLista) {
                     listaElementos.add(e);
-                    recyclerElementos.getAdapter().notifyDataSetChanged();
-                    actualizar_numero_elementos();
+                    //recyclerElementos.getAdapter().notifyDataSetChanged();
+
                 }
+                reordenar_y_refrescar();
+                actualizar_numero_elementos();
             }
 
             @Override
@@ -98,24 +120,38 @@ public class ListaCompra2 extends AppCompatActivity {
                         if(dataSnapshot.hasChild("Fecha")){
                             elem.setFecha(dataSnapshot.child("Fecha").getValue().toString());//este tampoco
                         }
+                        if(dataSnapshot.hasChild(("FechaCompra"))){
+                            elem.setFechaCompra(dataSnapshot.child("FechaCompra").getValue().toString());
+                        }
+                        if(dataSnapshot.hasChild(("FechaApuntado"))){
+                            elem.setFechaApuntado(dataSnapshot.child("FechaApuntado").getValue().toString());
+                        }
+                        if(dataSnapshot.hasChild("urgente")){
+                            elem.setUrgente((boolean)dataSnapshot.child("urgente").getValue());
+                        }
                         recyclerElementos.getAdapter().notifyDataSetChanged();
+                        //reordenar_y_refrescar();
                         actualizar_numero_elementos();
                     }
                 }
+                //reordenar_y_refrescar();
+                //actualizar_numero_elementos();
 
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 String nombreRemovido=dataSnapshot.child("Nombre").getValue().toString();
-
+                System.out.println("child removed:"+nombreRemovido);
                 for(elemento elem:listaElementos){
                     if(elem.Nombre.equals(nombreRemovido)){
                         elem.comprado=true;
-                        recyclerElementos.getAdapter().notifyDataSetChanged();
+                        //recyclerElementos.getAdapter().notifyDataSetChanged();
+
                         actualizar_numero_elementos();
                     }
                 }
+                reordenar_y_refrescar();
 
                 //esto no lo pongo porque si no en cuanto se marca el check desaparece
                 /*
@@ -148,14 +184,18 @@ public class ListaCompra2 extends AppCompatActivity {
 
     public void quitarElementosMarcados(View view){
         Iterator<elemento> iter=listaElementos.iterator();
+        elemento el;
 
         while(iter.hasNext()){
-            if(iter.next().comprado){
+            el=iter.next();
+            //if(iter.next().comprado){
+            if(el.comprado || el.agotado){
                 iter.remove();
             }
         }
 
-        recyclerElementos.getAdapter().notifyDataSetChanged();
+        //recyclerElementos.getAdapter().notifyDataSetChanged();
+        reordenar_y_refrescar();
         actualizar_numero_elementos();
 
     }
@@ -163,6 +203,55 @@ public class ListaCompra2 extends AppCompatActivity {
     public void actualizar_numero_elementos(){
         TextView texto=findViewById(R.id.labelCantidadElementos);
         texto.setText(listaElementos.size()+" elementos");
+    }
+    public String leerTextoGuardado(String rutaArchivo) {
+
+        String textoLeido="";
+        try{
+            BufferedReader br=new BufferedReader(new InputStreamReader(openFileInput(rutaArchivo)));
+            textoLeido=br.readLine();
+            br.close();
+        }catch (Exception e){
+            textoLeido="";
+        }
+        return textoLeido;
+    }
+
+    public void guardarTexto(String rutaArchivo,String texto){
+        try{
+            OutputStreamWriter osw=new OutputStreamWriter(openFileOutput(rutaArchivo, Context.MODE_PRIVATE));
+            osw.write(texto);
+            osw.close();
+
+        }catch (Exception e){
+            System.out.println("no se ha podido guardar el archivo");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        guardarTexto("activo","Y");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        guardarTexto("activo","N");
+    }
+
+    public void reordenar_y_refrescar(){
+        Collections.sort(listaElementos, new Comparator<elemento>() {
+            @Override
+            public int compare(elemento el1, elemento el2) {
+                if(el1.urgente==el2.urgente){
+                    return el1.Nombre.compareTo(el2.Nombre);
+                }else{
+                    if(el1.urgente){return -1;}else{return 1;}
+                }
+            }
+        });
+        recyclerElementos.getAdapter().notifyDataSetChanged();
     }
 
 }

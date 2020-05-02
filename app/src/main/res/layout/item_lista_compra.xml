@@ -29,14 +29,14 @@
         android:id="@+id/labelNombre"
         android:layout_width="wrap_content"
         android:layout_height="29dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="8dp"
         android:text="Nombre"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imagenUrgente"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -74,6 +74,18 @@
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/checkBoxComprado" />
+
+    <ImageView
+        android:id="@+id/imagenUrgente"
+        android:layout_width="23dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/cuadro"
+        app:layout_constraintTop_toTopOf="@+id/cuadro"
+        app:srcCompat="@drawable/exclamacion"
+        tools:visibility="visible" />
 
 
 </android.support.constraint.ConstraintLayout>

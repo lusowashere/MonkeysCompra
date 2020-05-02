@@ -6,13 +6,19 @@ public class ElementoAux {
     public String Tipo;
     public boolean comprado;
     public String Fecha;
+    public String FechaCompra;
+    public String FechaApuntado;
+    public boolean urgente;
 
-    public ElementoAux(String Cantidad, String Nombre, String Tipo, boolean comprado,String Fecha){
+    public ElementoAux(String Cantidad, String Nombre, String Tipo, boolean comprado,String Fecha, String fechaCompra,String fechaApuntado,boolean urgente){
         this.Cantidad=Cantidad;
         this.Nombre=Nombre;
         this.Tipo=Tipo;
         this.comprado=comprado;
         this.Fecha=Fecha;
+        this.FechaCompra=fechaCompra;
+        this.FechaApuntado=fechaApuntado;
+        this.urgente=urgente;
     }
 
 
